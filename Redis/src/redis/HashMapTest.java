@@ -15,12 +15,12 @@ public class HashMapTest {
 		return (boolean) jedis.exists(uid);
 	}
 
-	public void initInsertUser(final String id, final String name, final int age) {
+	public String initInsertUser(final String id, final String name, final int age) {
 		final Map<String, String> userProperties = new HashMap<String, String>();
 		userProperties.put("name", name);
 		userProperties.put("age", String.valueOf(age));
 
-		jedis.hmset(id, userProperties);
+		return jedis.hmset(id, userProperties);
 	}
 
 	public Information getUser(final String id) {
@@ -34,13 +34,16 @@ public class HashMapTest {
 		return result;
 	}
 
-	public void incrementAge(String id) {
-		updateHashMap(id, "age");
+	public long incrementAge(String id) {
+		return updateHashMap(id, "age");
 	}
 
-	private void updateHashMap(final String id, final String name) {
-		jedis.hincrBy(id, name, 1);
-
+	private long updateHashMap(final String id, final String name) {
+		return jedis.hincrBy(id, name, 1);
+	}
+	
+	public long removeUser(final String key){
+		return jedis.del(key);
 	}
 
 	class Information {
@@ -80,8 +83,21 @@ public class HashMapTest {
 	
 	public static void main(String args[]){
 		HashMapTest test = new HashMapTest();
-		test.initInsertUser("1", "jung", 29);
-		Information result = test.getUser("1");
-		System.out.println(result);
+		
+		//1. 등록
+		String key = "1";
+		System.out.println("INSERT : "+test.initInsertUser(key, "jung", 29));
+		
+		//2. 검색
+		Information result = test.getUser(key);
+		System.out.println("GET : "+result);
+		
+		//3. 업데이트 : 나이 한살 증가  
+		System.out.println("UPDATE : "+test.incrementAge(key));
+		Information increAgeAfter = test.getUser(key);
+		System.out.println("GET : "+increAgeAfter);
+		
+		//4. 삭제
+		System.out.println("DELETE : "+test.removeUser(key));
 	}
 }
