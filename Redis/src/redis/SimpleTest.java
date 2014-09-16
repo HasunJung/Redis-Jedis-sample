@@ -23,9 +23,7 @@ public class SimpleTest {
         String removeAfter = jedis.get(key);
         System.out.println(removeAfter);
         
-        /**
-         * hashmap 테스트
-         * */
+       
         
         
         
