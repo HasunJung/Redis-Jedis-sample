@@ -8,9 +8,17 @@ public class SimpleTest {
 		final RedisConnector connector = RedisConnector.getInstance();
 		final Jedis jedis = connector.getJedis();
 
-        jedis.set("study", "redis");
-        String value = jedis.get("study");
-        System.out.println(value);
+		//1. 등록
+		final String key="study";
+        jedis.set(key, "redis");
+        
+        //2. 검색
+        String searchValue = jedis.get(key);
+        System.out.println(searchValue);
+        
+        //3. 삭제
+        jedis.del(key);
+        String removeAfter = jedis.get(key);
+        System.out.println(removeAfter);
 	}
-
 }
