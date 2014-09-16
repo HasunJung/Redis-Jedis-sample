@@ -5,9 +5,11 @@ import redis.clients.jedis.Jedis;
 public class SimpleTest {
 
 	public static void main(String[] args) {
-		final RedisConnector connector = RedisConnector.getInstance();
-		final Jedis jedis = connector.getJedis();
+		final Jedis jedis = new Jedis("127.0.0.1", 6379);
 
+		/**
+		 * key-value 테스트
+		 * */
 		//1. 등록
 		final String key="study";
         jedis.set(key, "redis");
@@ -20,5 +22,12 @@ public class SimpleTest {
         jedis.del(key);
         String removeAfter = jedis.get(key);
         System.out.println(removeAfter);
+        
+        /**
+         * hashmap 테스트
+         * */
+        
+        
+        
 	}
 }

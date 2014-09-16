@@ -6,8 +6,7 @@ import java.util.Map;
 import redis.clients.jedis.Jedis;
 
 public class HashMapTest {
-	private final RedisConnector connector = RedisConnector.getInstance();
-	private final Jedis jedis = connector.getJedis();
+	private final Jedis jedis = new Jedis("127.0.0.1", 6379);
 
 	public boolean userExist(final String uid) {
 		return (boolean) jedis.exists(uid);
